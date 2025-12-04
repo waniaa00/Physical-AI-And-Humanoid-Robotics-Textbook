@@ -60,8 +60,8 @@ const config: Config = {
     navbar: {
       title: 'Physical AI & Humanoid Robotics',
       logo: {
-        alt: 'Physical AI Logo',
-        src: 'img/logo.svg',
+        alt: 'Robot Logo',
+        src: 'img/robot-logo.svg',
       },
       items: [
         {

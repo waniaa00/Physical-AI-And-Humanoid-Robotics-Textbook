@@ -6,25 +6,237 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #667eea;
+  --ifm-color-primary-dark: #4c63e0;
+  --ifm-color-primary-darker: #3e54db;
+  --ifm-color-primary-darkest: #2a3cb8;
+  --ifm-color-primary-light: #8099f4;
+  --ifm-color-primary-lighter: #9aabf7;
+  --ifm-color-primary-lightest: #c7d2fb;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-container-width: 1400px;
+  --ifm-container-width-xl: 1400px;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #8099f4;
+  --ifm-color-primary-dark: #667eea;
+  --ifm-color-primary-darker: #4c63e0;
+  --ifm-color-primary-darkest: #3e54db;
+  --ifm-color-primary-light: #9aabf7;
+  --ifm-color-primary-lighter: #b4c0f9;
+  --ifm-color-primary-lightest: #c7d2fb;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   RESPONSIVE GLOBAL STYLES
+   ======================================== */
+
+/* Base responsive container */
+.container {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Responsive typography */
+html {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive tables */
+.markdown table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 768px) {
+  .markdown table {
+    font-size: 0.875rem;
+  }
+}
+
+/* Responsive code blocks */
+.prism-code {
+  font-size: 0.875rem;
+}
+
+@media screen and (max-width: 768px) {
+  .prism-code {
+    font-size: 0.75rem;
+  }
+}
+
+/* Navbar responsive improvements */
+.navbar {
+  padding: 0.5rem 1rem;
+}
+
+@media screen and (max-width: 996px) {
+  .navbar__inner {
+    flex-wrap: wrap;
+  }
+
+  .navbar__items {
+    flex-wrap: wrap;
+  }
+}
+
+/* Sidebar responsive */
+@media screen and (max-width: 996px) {
+  .docSidebarContainer {
+    margin-right: 0 !important;
+  }
+}
+
+/* Footer responsive */
+.footer {
+  padding: 2rem 0;
+}
+
+@media screen and (max-width: 768px) {
+  .footer__links {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer__col {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Button responsive */
+.button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .button--lg {
+    font-size: 0.95rem;
+    padding: 0.65rem 1.25rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .button {
+    width: 100%;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Responsive spacing utilities */
+@media screen and (max-width: 768px) {
+  .padding-vert--xl {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .padding-horiz--lg {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .margin-vert--xl {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* Card responsive */
+.card {
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media screen and (max-width: 768px) {
+  a, button, .button {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Responsive grid */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -1rem;
+}
+
+.col {
+  padding: 0 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .footer,
+  .pagination-nav,
+  .theme-edit-this-page {
+    display: none !important;
+  }
 }
