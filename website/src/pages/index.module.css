@@ -1,0 +1,131 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  padding: 5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+}
+
+.heroContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+.heroContent {
+  text-align: left;
+  color: white;
+}
+
+.heroTitle {
+  font-size: 3.5rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 1.5rem !important;
+  line-height: 1.2 !important;
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.buttons a {
+  min-width: 140px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.buttons a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.heroImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.robotImage {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.robotImage:hover {
+  transform: scale(1.05);
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 3rem 1.5rem;
+    min-height: auto;
+  }
+
+  .heroContainer {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .heroContent {
+    text-align: center;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem !important;
+  }
+
+  .heroSubtitle {
+    font-size: 1.2rem;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .robotImage {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .heroTitle {
+    font-size: 2rem !important;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .robotImage {
+    max-width: 100%;
+  }
+}
