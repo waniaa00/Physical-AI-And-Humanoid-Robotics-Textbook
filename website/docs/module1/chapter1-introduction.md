@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 title: "Chapter 1: Introduction to Physical AI"
+interests: ["physical-ai", "ros2"]
 ---
 
 # Chapter 1: What is Physical AI?

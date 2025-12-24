@@ -1,0 +1,806 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Component Snapshots (T062) ContentCard should match snapshot with full data 1`] = `
+<article
+  aria-label="Chapter 1: Introduction to Physical AI chapter"
+  class="card"
+  data-chapter-id="chapter1"
+>
+  <a
+    aria-label="Read Chapter 1: Introduction to Physical AI"
+    class="cardLink"
+    href="/docs/chapter1"
+  >
+    <h3
+      class="title"
+    >
+      Chapter 1: Introduction to Physical AI
+    </h3>
+  </a>
+  <p
+    class="description"
+  >
+    Introduction to physical AI systems and their role in robotics
+  </p>
+  <div
+    aria-label="Chapter topics"
+    class="badgesContainer"
+    role="list"
+  >
+    <span
+      aria-label="Topic: Physical AI"
+      class="badge"
+      role="listitem"
+    >
+      Physical AI
+    </span>
+    <span
+      aria-label="Topic: ROS 2 Fundamentals"
+      class="badge"
+      role="listitem"
+    >
+      ROS 2 Fundamentals
+    </span>
+  </div>
+</article>
+`;
+
+exports[`Component Snapshots (T062) ContentCard should match snapshot with no interests 1`] = `
+<article
+  aria-label="Chapter 1: Introduction to Physical AI chapter"
+  class="card"
+  data-chapter-id="chapter1"
+>
+  <a
+    aria-label="Read Chapter 1: Introduction to Physical AI"
+    class="cardLink"
+    href="/docs/chapter1"
+  >
+    <h3
+      class="title"
+    >
+      Chapter 1: Introduction to Physical AI
+    </h3>
+  </a>
+  <p
+    class="description"
+  >
+    Introduction to physical AI systems and their role in robotics
+  </p>
+</article>
+`;
+
+exports[`Component Snapshots (T062) ContentCard should match snapshot with single interest 1`] = `
+<article
+  aria-label="Chapter 1: Introduction to Physical AI chapter"
+  class="card"
+  data-chapter-id="chapter1"
+>
+  <a
+    aria-label="Read Chapter 1: Introduction to Physical AI"
+    class="cardLink"
+    href="/docs/chapter1"
+  >
+    <h3
+      class="title"
+    >
+      Chapter 1: Introduction to Physical AI
+    </h3>
+  </a>
+  <p
+    class="description"
+  >
+    Introduction to physical AI systems and their role in robotics
+  </p>
+  <div
+    aria-label="Chapter topics"
+    class="badgesContainer"
+    role="list"
+  >
+    <span
+      aria-label="Topic: Physical AI"
+      class="badge"
+      role="listitem"
+    >
+      Physical AI
+    </span>
+  </div>
+</article>
+`;
+
+exports[`Component Snapshots (T062) ContentCard should match snapshot without description 1`] = `
+<article
+  aria-label="Chapter 1: Introduction to Physical AI chapter"
+  class="card"
+  data-chapter-id="chapter1"
+>
+  <a
+    aria-label="Read Chapter 1: Introduction to Physical AI"
+    class="cardLink"
+    href="/docs/chapter1"
+  >
+    <h3
+      class="title"
+    >
+      Chapter 1: Introduction to Physical AI
+    </h3>
+  </a>
+  <div
+    aria-label="Chapter topics"
+    class="badgesContainer"
+    role="list"
+  >
+    <span
+      aria-label="Topic: Physical AI"
+      class="badge"
+      role="listitem"
+    >
+      Physical AI
+    </span>
+    <span
+      aria-label="Topic: ROS 2 Fundamentals"
+      class="badge"
+      role="listitem"
+    >
+      ROS 2 Fundamentals
+    </span>
+  </div>
+</article>
+`;
+
+exports[`Component Snapshots (T062) InterestPrompt should match snapshot 1`] = `
+<div
+  class="container"
+  data-testid="interest-prompt"
+>
+  <div
+    class="content"
+  >
+    <div
+      aria-hidden="true"
+      class="icon"
+    >
+      🎯
+    </div>
+    <h2
+      class="heading"
+    >
+      Select Your Interests
+    </h2>
+    <p
+      class="description"
+    >
+      Tell us what you're interested in to personalize your learning experience. We'll show you the most relevant chapters and content based on your preferences.
+    </p>
+    <div
+      class="actions"
+    >
+      <a
+        class="button buttonPrimary"
+        href="/profile"
+      >
+        ✨ Select Interests
+      </a>
+      <a
+        class="button buttonSecondary"
+        href="/docs/intro"
+      >
+        📚 Browse All Content
+      </a>
+    </div>
+    <p
+      class="helpText"
+    >
+      You can update your interests anytime from your profile page.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedContentView should match snapshot in loading state 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="loading"
+  >
+    Loading your personalized content...
+  </div>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedContentView should match snapshot with content 1`] = `
+<div
+  class="container"
+>
+  <header
+    class="header"
+  >
+    <h1>
+      Your Personalized Content
+    </h1>
+    <p
+      class="subtitle"
+    >
+      Showing 
+      2
+       
+      chapters
+       matching your interests
+       (8 total)
+    </p>
+  </header>
+  <nav
+    aria-label="Personalized content navigation"
+    class="nav"
+    role="navigation"
+  >
+    <div
+      class="navContainer"
+    >
+      <a
+        class="navLink"
+        href="/docs/intro"
+      >
+        📖 View Full Book
+      </a>
+      <a
+        class="navLink"
+        href="/profile"
+      >
+        ⚙️ Update Interests
+      </a>
+    </div>
+  </nav>
+  <div
+    class="chaptersGrid"
+  >
+    <article
+      aria-label="Chapter 1: Introduction to Physical AI chapter"
+      class="card"
+      data-chapter-id="chapter1"
+    >
+      <a
+        aria-label="Read Chapter 1: Introduction to Physical AI"
+        class="cardLink"
+        href="/docs/chapter1"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 1: Introduction to Physical AI
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Introduction to physical AI systems
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+        <span
+          aria-label="Topic: ROS 2 Fundamentals"
+          class="badge"
+          role="listitem"
+        >
+          ROS 2 Fundamentals
+        </span>
+      </div>
+    </article>
+    <article
+      aria-label="Chapter 2: ROS2 Fundamentals chapter"
+      class="card"
+      data-chapter-id="chapter2"
+    >
+      <a
+        aria-label="Read Chapter 2: ROS2 Fundamentals"
+        class="cardLink"
+        href="/docs/chapter2"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 2: ROS2 Fundamentals
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Learn about ROS 2 architecture
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: ROS 2 Fundamentals"
+          class="badge"
+          role="listitem"
+        >
+          ROS 2 Fundamentals
+        </span>
+      </div>
+    </article>
+  </div>
+  <footer
+    class="footer"
+  >
+    <p>
+      Found what you're looking for? 
+      <a
+        href="/docs/intro"
+      >
+        Browse the full book
+      </a>
+       for more content.
+    </p>
+  </footer>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedContentView should match snapshot with empty state (no interests) 1`] = `
+<div
+  class="container"
+  data-testid="interest-prompt"
+>
+  <div
+    class="content"
+  >
+    <div
+      aria-hidden="true"
+      class="icon"
+    >
+      🎯
+    </div>
+    <h2
+      class="heading"
+    >
+      Select Your Interests
+    </h2>
+    <p
+      class="description"
+    >
+      Tell us what you're interested in to personalize your learning experience. We'll show you the most relevant chapters and content based on your preferences.
+    </p>
+    <div
+      class="actions"
+    >
+      <a
+        class="button buttonPrimary"
+        href="/profile"
+      >
+        ✨ Select Interests
+      </a>
+      <a
+        class="button buttonSecondary"
+        href="/docs/intro"
+      >
+        📚 Browse All Content
+      </a>
+    </div>
+    <p
+      class="helpText"
+    >
+      You can update your interests anytime from your profile page.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedContentView should match snapshot with empty state (no matches) 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="emptyState"
+  >
+    <h2>
+      No chapters found
+    </h2>
+    <p>
+      No chapters match your current interests. Try updating your interests or browse the full book.
+    </p>
+    <nav
+      aria-label="Personalized content navigation"
+      class="nav"
+      role="navigation"
+    >
+      <div
+        class="navContainer"
+      >
+        <a
+          class="navLink"
+          href="/docs/intro"
+        >
+          📖 View Full Book
+        </a>
+        <a
+          class="navLink"
+          href="/profile"
+        >
+          ⚙️ Update Interests
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedContentView should match snapshot with many chapters 1`] = `
+<div
+  class="container"
+>
+  <header
+    class="header"
+  >
+    <h1>
+      Your Personalized Content
+    </h1>
+    <p
+      class="subtitle"
+    >
+      Showing 
+      5
+       
+      chapters
+       matching your interests
+       (10 total)
+    </p>
+  </header>
+  <nav
+    aria-label="Personalized content navigation"
+    class="nav"
+    role="navigation"
+  >
+    <div
+      class="navContainer"
+    >
+      <a
+        class="navLink"
+        href="/docs/intro"
+      >
+        📖 View Full Book
+      </a>
+      <a
+        class="navLink"
+        href="/profile"
+      >
+        ⚙️ Update Interests
+      </a>
+    </div>
+  </nav>
+  <div
+    class="chaptersGrid"
+  >
+    <article
+      aria-label="Chapter 1: Test Chapter chapter"
+      class="card"
+      data-chapter-id="chapter1"
+    >
+      <a
+        aria-label="Read Chapter 1: Test Chapter"
+        class="cardLink"
+        href="/docs/chapter1"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 1: Test Chapter
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Test chapter 1
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+      </div>
+    </article>
+    <article
+      aria-label="Chapter 2: Test Chapter chapter"
+      class="card"
+      data-chapter-id="chapter2"
+    >
+      <a
+        aria-label="Read Chapter 2: Test Chapter"
+        class="cardLink"
+        href="/docs/chapter2"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 2: Test Chapter
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Test chapter 2
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+      </div>
+    </article>
+    <article
+      aria-label="Chapter 3: Test Chapter chapter"
+      class="card"
+      data-chapter-id="chapter3"
+    >
+      <a
+        aria-label="Read Chapter 3: Test Chapter"
+        class="cardLink"
+        href="/docs/chapter3"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 3: Test Chapter
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Test chapter 3
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+      </div>
+    </article>
+    <article
+      aria-label="Chapter 4: Test Chapter chapter"
+      class="card"
+      data-chapter-id="chapter4"
+    >
+      <a
+        aria-label="Read Chapter 4: Test Chapter"
+        class="cardLink"
+        href="/docs/chapter4"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 4: Test Chapter
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Test chapter 4
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+      </div>
+    </article>
+    <article
+      aria-label="Chapter 5: Test Chapter chapter"
+      class="card"
+      data-chapter-id="chapter5"
+    >
+      <a
+        aria-label="Read Chapter 5: Test Chapter"
+        class="cardLink"
+        href="/docs/chapter5"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 5: Test Chapter
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Test chapter 5
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+      </div>
+    </article>
+  </div>
+  <footer
+    class="footer"
+  >
+    <p>
+      Found what you're looking for? 
+      <a
+        href="/docs/intro"
+      >
+        Browse the full book
+      </a>
+       for more content.
+    </p>
+  </footer>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedContentView should match snapshot with single chapter 1`] = `
+<div
+  class="container"
+>
+  <header
+    class="header"
+  >
+    <h1>
+      Your Personalized Content
+    </h1>
+    <p
+      class="subtitle"
+    >
+      Showing 
+      1
+       
+      chapter
+       matching your interests
+       (8 total)
+    </p>
+  </header>
+  <nav
+    aria-label="Personalized content navigation"
+    class="nav"
+    role="navigation"
+  >
+    <div
+      class="navContainer"
+    >
+      <a
+        class="navLink"
+        href="/docs/intro"
+      >
+        📖 View Full Book
+      </a>
+      <a
+        class="navLink"
+        href="/profile"
+      >
+        ⚙️ Update Interests
+      </a>
+    </div>
+  </nav>
+  <div
+    class="chaptersGrid"
+  >
+    <article
+      aria-label="Chapter 1: Introduction to Physical AI chapter"
+      class="card"
+      data-chapter-id="chapter1"
+    >
+      <a
+        aria-label="Read Chapter 1: Introduction to Physical AI"
+        class="cardLink"
+        href="/docs/chapter1"
+      >
+        <h3
+          class="title"
+        >
+          Chapter 1: Introduction to Physical AI
+        </h3>
+      </a>
+      <p
+        class="description"
+      >
+        Introduction to physical AI systems
+      </p>
+      <div
+        aria-label="Chapter topics"
+        class="badgesContainer"
+        role="list"
+      >
+        <span
+          aria-label="Topic: Physical AI"
+          class="badge"
+          role="listitem"
+        >
+          Physical AI
+        </span>
+        <span
+          aria-label="Topic: ROS 2 Fundamentals"
+          class="badge"
+          role="listitem"
+        >
+          ROS 2 Fundamentals
+        </span>
+      </div>
+    </article>
+  </div>
+  <footer
+    class="footer"
+  >
+    <p>
+      Found what you're looking for? 
+      <a
+        href="/docs/intro"
+      >
+        Browse the full book
+      </a>
+       for more content.
+    </p>
+  </footer>
+</div>
+`;
+
+exports[`Component Snapshots (T062) PersonalizedNav should match snapshot 1`] = `
+<nav
+  aria-label="Personalized content navigation"
+  class="nav"
+  role="navigation"
+>
+  <div
+    class="navContainer"
+  >
+    <a
+      class="navLink"
+      href="/docs/intro"
+    >
+      📖 View Full Book
+    </a>
+    <a
+      class="navLink"
+      href="/profile"
+    >
+      ⚙️ Update Interests
+    </a>
+  </div>
+</nav>
+`;

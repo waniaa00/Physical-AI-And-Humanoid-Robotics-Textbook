@@ -34,6 +34,10 @@ const config: Config = {
     locales: ['en'],
   },
 
+  customFields: {
+    backendUrl: process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000',
+  },
+
   presets: [
     [
       'classic',
@@ -45,11 +49,22 @@ const config: Config = {
         },
         blog: false, // Disable blog for book-focused site
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: ['./src/css/custom.css', './src/css/tailwind.css'],
         },
       } satisfies Preset.Options,
     ],
   ],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        fromExtensions: ['html'],
+      },
+    ],
+  ],
+
+  themes: [],
 
   themeConfig: {
     // Replace with your project's social card
@@ -71,7 +86,18 @@ const config: Config = {
           label: 'Chapters',
         },
         {
+          // T044: Link to personalized content page
+          to: '/personalized-content',
+          label: '✨ My Content',
+          position: 'left',
+        },
+        {
           type: 'docsVersionDropdown',
+          position: 'right',
+        },
+        {
+          to: '/profile',
+          label: '👤 Profile',
           position: 'right',
         },
         {

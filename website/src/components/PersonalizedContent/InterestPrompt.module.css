@@ -1,0 +1,120 @@
+/**
+ * Styles for InterestPrompt component (T032)
+ * Empty state styling with centered, visually appealing layout
+ */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.content {
+  max-width: 600px;
+  width: 100%;
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--ifm-heading-color);
+}
+
+.description {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 2rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.buttonPrimary {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border: 2px solid var(--ifm-color-primary);
+}
+
+.buttonPrimary:hover {
+  background-color: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.buttonSecondary {
+  background-color: transparent;
+  color: var(--ifm-color-primary);
+  border: 2px solid var(--ifm-color-primary);
+}
+
+.buttonSecondary:hover {
+  background-color: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary-dark);
+  color: var(--ifm-color-primary-dark);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.helpText {
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-600);
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+    min-height: 300px;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,6 +1,7 @@
 ---
 sidebar_position: 4
 title: "Chapter 4: Dynamics and Control"
+interests: ["dynamics-control"]
 ---
 
 # Chapter 4: Robot Dynamics and Control

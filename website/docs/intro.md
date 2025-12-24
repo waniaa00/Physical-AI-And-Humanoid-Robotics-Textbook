@@ -48,122 +48,45 @@ This book teaches you to build **intelligent physical AI systems** that can:
 - **Week 11**: Whole-body manipulation (walk + grasp)
 - **Week 14**: Voice-controlled robot (Whisper + LLM + ROS 2)
 
-### 🏆 Final Project (Week 16)
-**Home Assistant Robot**
-- Navigate multi-room apartment
-- Fetch objects on voice command
-- Manipulate doors and drawers
-- Avoid humans safely
-
----
-
-## 🎓 Prerequisites
-
-### Required Knowledge
-- ✅ **Python Programming**: Functions, classes, NumPy basics
-- ✅ **Linear Algebra**: Vectors, matrices, transformations (basic)
-- ✅ **Command Line**: Bash/terminal navigation
-
-### Nice to Have (Not Required)
-- ⭐ C++ (for performance-critical code)
-- ⭐ Control theory (PID, state machines)
-- ⭐ Deep learning (PyTorch, TensorFlow)
-
-**New to Python?** Complete [Python Crash Course](https://ehmatthes.github.io/pcc/) first (Chapters 1-11)
-
----
-
-## 💻 Setup Requirements
-
-### Software (Required)
-- **Operating System**: Ubuntu 22.04 LTS (or Docker on Windows/Mac)
-- **ROS 2**: Humble Hawksbill (installed in Week 1)
-- **Python**: 3.10+ (included with Ubuntu 22.04)
-- **Code Editor**: VS Code (recommended)
-
-### Hardware (Minimum)
-- **CPU**: Intel i5 / AMD Ryzen 5 (4 cores)
-- **RAM**: 16GB
-- **Storage**: 50GB free SSD space
-- **GPU**: Not required for basic simulations
-
-### Hardware (Recommended for Isaac Sim)
-- **GPU**: NVIDIA RTX 3060+ (6GB VRAM)
-- **RAM**: 32GB
-- **Storage**: 100GB NVMe SSD
-
-**Budget Option**: Use cloud GPU (AWS, Google Colab) for Isaac Sim chapters
-
----
-
-## 📖 How to Use This Book
-
-### Self-Paced Learning
-1. **Read** each chapter's theory section
-2. **Study** code examples with line-by-line explanations
-3. **Complete** hands-on labs in simulation
-4. **Submit** weekly assignments for feedback
-5. **Build** incremental projects that combine concepts
-
-### Time Commitment
-- **Reading/Theory**: 2-3 hours per week
-- **Labs/Coding**: 4-6 hours per week
-- **Assignments**: 2-3 hours per week
-
-**Total**: 8-12 hours/week for 16 weeks
-
----
-
-## 🌟 What Makes This Different?
-
-### 1. **Hands-On from Day 1**
-No passive reading—every chapter includes runnable code you execute immediately.
-
-### 2. **Modern AI Integration**
-Learn cutting-edge VLA models (RT-2, OpenVLA) and LLM-based planning (GPT-4, Claude).
-
-### 3. **Production-Ready Skills**
-Deploy to real hardware (Jetson, Raspberry Pi) and container orchestration (Docker).
-
-### 4. **Industry-Standard Tools**
-ROS 2 (used by Tesla, Boston Dynamics), Isaac Sim (NVIDIA), Unity (game industry).
-
-### 5. **Comprehensive Coverage**
-From low-level kinematics to high-level language understanding in 16 weeks.
+### Capstone Project
+**Week 16**: Deploy a complete humanoid system that can:
+- Navigate to a specified location
+- Identify and grasp an object
+- Respond to voice commands
+- Operate safely around humans
 
 ---
 
 ## 🚀 Getting Started
 
-### Week 1 Checklist
+### Prerequisites
+- **Programming**: Basic Python knowledge (variables, functions, classes)
+- **Math**: Linear algebra fundamentals (vectors, matrices, transformations)
+- **Tools**: Familiarity with command line and Git
 
-1. ⬜ Install Ubuntu 22.04 (or Docker Desktop)
-2. ⬜ Install ROS 2 Humble
-3. ⬜ Install VS Code with ROS extensions
-4. ⬜ Clone course repository
-5. ⬜ Run test script: `ros2 run demo_nodes_cpp talker`
-6. ⬜ Join discussion forum
+### Hardware Requirements
+- **Minimum**: Intel i5/AMD Ryzen 5, 16GB RAM, Ubuntu 22.04
+- **Recommended**: Intel i7/AMD Ryzen 7, 32GB RAM, RTX 3060+ for simulation
 
-**Ready?** Proceed to [Chapter 1: What is Physical AI? →](./module1/chapter1-introduction)
-
----
-
-## ❓ FAQ
-
-**Q: Do I need a physical robot?**
-A: No! All labs run in simulation. Physical hardware is optional for Week 16.
-
-**Q: Can I use Windows/Mac?**
-A: Yes, via Docker. Native Ubuntu 22.04 recommended for best performance.
-
-**Q: How much does this cost?**
-A: Book is free. Optional costs: Cloud GPU ($20-50 for Isaac Sim), LLM APIs ($10-30 for Chapter 14).
-
-**Q: Is this suitable for beginners?**
-A: If you know Python basics (functions, classes), yes! We teach robotics from scratch.
+### Software Stack
+- **ROS 2**: Humble Hawksbill (LTS)
+- **Simulation**: Gazebo, Isaac Sim, Unity Robotics Hub
+- **AI/ML**: PyTorch, OpenVLA, OpenAI/Anthropic APIs
 
 ---
 
-**Let's build intelligent physical systems! 🚀**
+## 📖 Navigation Guide
 
-[Start with Chapter 1: Introduction to Physical AI →](./module1/chapter1-introduction)
+Each chapter follows this structure:
+1. **Learning Objectives** - What you'll achieve
+2. **Conceptual Overview** - Theory and background
+3. **Hands-On Labs** - Practical implementation
+4. **Code Examples** - Working implementations
+5. **Assignments** - Challenge yourself
+6. **Further Reading** - Deep dive resources
+
+> **💡 Pro Tip**: Follow the course sequentially. Each week builds on previous concepts.
+
+---
+
+**Next**: Start with [Chapter 1: Introduction to Physical AI](./module1/chapter1-introduction)

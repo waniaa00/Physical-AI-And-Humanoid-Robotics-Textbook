@@ -28,7 +28,7 @@
   border-radius: 16px;
   padding: 3rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  max-width: 450px;
+  max-width: 800px;
   width: 100%;
   position: relative;
   z-index: 1;
@@ -294,5 +294,221 @@ html[data-theme='dark'] .guestLink:hover {
 
   .formGroup {
     margin-bottom: 1.25rem;
+  }
+}
+
+/* Progress Indicator (T054) */
+.progressIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stepNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+}
+
+.progressStep.active .stepNumber {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.progressStep.completed .stepNumber {
+  background-color: #10b981;
+  color: white;
+}
+
+.stepLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.progressStep.active .stepLabel {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.progressStep.completed .stepLabel {
+  color: #10b981;
+}
+
+.progressLine {
+  width: 80px;
+  height: 2px;
+  background-color: #e2e8f0;
+  margin: 0 1rem;
+}
+
+html[data-theme='dark'] .progressLine {
+  background-color: rgba(71, 85, 105, 0.5);
+}
+
+html[data-theme='dark'] .stepNumber {
+  background-color: rgba(71, 85, 105, 0.5);
+  color: #cbd5e1;
+}
+
+html[data-theme='dark'] .progressStep.completed .stepNumber {
+  background-color: #059669;
+}
+
+html[data-theme='dark'] .stepLabel {
+  color: #94a3b8;
+}
+
+/* Error Alert */
+.errorAlert {
+  padding: 0.875rem 1rem;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+html[data-theme='dark'] .errorAlert {
+  background-color: rgba(127, 29, 29, 0.3);
+  border-color: #991b1b;
+  color: #fca5a5;
+}
+
+/* Select Dropdown */
+.select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: white;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+html[data-theme='dark'] .select {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(71, 85, 105, 0.5);
+  color: #f1f5f9;
+}
+
+html[data-theme='dark'] .select:focus {
+  border-color: #3b82f6;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+/* Interests Form */
+.interestsForm {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+/* Secondary Button */
+.secondaryButton {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  background: #f1f5f9;
+  color: #475569;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.secondaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+html[data-theme='dark'] .secondaryButton {
+  background: rgba(71, 85, 105, 0.3);
+  color: #cbd5e1;
+  border-color: rgba(71, 85, 105, 0.5);
+}
+
+html[data-theme='dark'] .secondaryButton:hover:not(:disabled) {
+  background: rgba(71, 85, 105, 0.5);
+  border-color: rgba(100, 116, 139, 0.5);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitButton:disabled:hover {
+  transform: none;
+}
+
+/* Responsive adjustments for interests step */
+@media screen and (max-width: 768px) {
+  .authCard {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .progressIndicator {
+    padding: 0.75rem;
+  }
+
+  .progressLine {
+    width: 40px;
+    margin: 0 0.5rem;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .secondaryButton,
+  .submitButton {
+    width: 100%;
   }
 }

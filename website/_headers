@@ -1,0 +1,37 @@
+# Netlify Security Headers Configuration
+# https://docs.netlify.com/routing/headers/
+
+/*
+  # Content Security Policy - Protects against XSS and injection attacks
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' http://localhost:* ws://localhost:*; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+  # Strict Transport Security - Forces HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+
+  # Prevent clickjacking
+  X-Frame-Options: DENY
+
+  # Enable browser XSS protection (legacy browsers)
+  X-XSS-Protection: 1; mode=block
+
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Control browser features
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+  # Cache control for static assets
+  Cache-Control: public, max-age=31536000, immutable
+
+# API routes (if proxying through Netlify)
+/api/*
+  # No caching for API responses
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# HTML pages
+/*.html
+  # Short cache for HTML
+  Cache-Control: public, max-age=0, must-revalidate

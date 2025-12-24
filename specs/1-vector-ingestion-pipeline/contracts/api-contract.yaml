@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: Vector Ingestion Pipeline API
+  description: API for managing the vector ingestion pipeline from website content to vector storage
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /ingest:
+    post:
+      summary: Trigger the ingestion pipeline
+      description: Starts the process of crawling the target website, extracting content, generating embeddings, and storing in Qdrant
+      responses:
+        '200':
+          description: Ingestion pipeline completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Processed 15 URLs and stored embeddings in Qdrant"
+                  processed_urls:
+                    type: integer
+                    example: 15
+                  details:
+                    type: object
+                    properties:
+                      total_urls_found:
+                        type: integer
+                        example: 15
+                      successfully_processed:
+                        type: integer
+                        example: 14
+                      failed_processing:
+                        type: integer
+                        example: 1
+        '500':
+          description: Internal server error during ingestion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: "Error during ingestion: Connection timeout to external service"
+
+  /verify:
+    get:
+      summary: Verify stored embeddings
+      description: Checks the status of stored embeddings in Qdrant and returns collection information
+      responses:
+        '200':
+          description: Verification completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  collection_info:
+                    type: object
+                    properties:
+                      vectors_count:
+                        type: integer
+                        example: 150
+                      collection_name:
+                        type: string
+                        example: "humanoid-robotics-embeddings"
+                  sample_points:
+                    type: integer
+                    example: 5
+                  last_updated:
+                    type: string
+                    format: date-time
+                    example: "2025-12-11T10:30:00Z"
+        '500':
+          description: Internal server error during verification
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: "Error during verification: Qdrant connection failed"
+
+components:
+  schemas:
+    IngestionRequest:
+      type: object
+      properties:
+        target_url:
+          type: string
+          description: URL to crawl (defaults to configured target)
+          example: "https://physical-ai-and-humanoid-robotics-t-two.vercel.app/"
+      required:
+        - target_url
+
+    IngestionResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Processed 15 URLs and stored embeddings in Qdrant"
+        processed_urls:
+          type: integer
+          example: 15
+      required:
+        - status
+        - message
+        - processed_urls
+
+    VerificationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        collection_info:
+          type: object
+          properties:
+            vectors_count:
+              type: integer
+              example: 150
+            collection_name:
+              type: string
+              example: "humanoid-robotics-embeddings"
+        sample_points:
+          type: integer
+          example: 5
+      required:
+        - status
+        - collection_info
+        - sample_points

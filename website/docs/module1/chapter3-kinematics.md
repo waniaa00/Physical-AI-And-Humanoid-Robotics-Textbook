@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 title: "Chapter 3: Robot Kinematics"
+interests: ["kinematics"]
 ---
 
 # Chapter 3: Robot Kinematics

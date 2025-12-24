@@ -1,0 +1,85 @@
+Requirement already satisfied: openai-agents in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (0.5.1)
+Requirement already satisfied: httpx in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (0.27.2)
+Requirement already satisfied: griffe<2,>=1.5.6 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai-agents) (1.15.0)
+Requirement already satisfied: mcp<2,>=1.11.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai-agents) (1.21.1)
+Collecting openai<3,>=2.7.1 (from openai-agents)
+  Downloading openai-2.12.0-py3-none-any.whl.metadata (29 kB)
+Collecting pydantic<3,>=2.12.3 (from openai-agents)
+  Using cached pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+Requirement already satisfied: requests<3,>=2.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai-agents) (2.31.0)
+Requirement already satisfied: types-requests<3,>=2.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai-agents) (2.32.4.20250913)
+Requirement already satisfied: typing-extensions<5,>=4.12.2 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai-agents) (4.15.0)
+Requirement already satisfied: colorama>=0.4 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from griffe<2,>=1.5.6->openai-agents) (0.4.6)
+Collecting anyio>=4.5 (from mcp<2,>=1.11.0->openai-agents)
+  Using cached anyio-4.12.0-py3-none-any.whl.metadata (4.3 kB)
+Requirement already satisfied: httpx-sse>=0.4 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (0.4.0)
+Requirement already satisfied: jsonschema>=4.20.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (4.23.0)
+Requirement already satisfied: pydantic-settings>=2.5.2 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (2.7.0)
+Requirement already satisfied: pyjwt>=2.10.1 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from pyjwt[crypto]>=2.10.1->mcp<2,>=1.11.0->openai-agents) (2.10.1)
+Requirement already satisfied: python-multipart>=0.0.9 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (0.0.20)
+Requirement already satisfied: pywin32>=310 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (311)
+Requirement already satisfied: sse-starlette>=1.6.1 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (3.0.3)
+Requirement already satisfied: starlette>=0.27 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (0.38.6)
+Requirement already satisfied: typing-inspection>=0.4.1 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (0.4.2)
+Requirement already satisfied: uvicorn>=0.31.1 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from mcp<2,>=1.11.0->openai-agents) (0.32.0)
+Requirement already satisfied: distro<2,>=1.7.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai<3,>=2.7.1->openai-agents) (1.9.0)
+Requirement already satisfied: jiter<1,>=0.10.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai<3,>=2.7.1->openai-agents) (0.12.0)
+Requirement already satisfied: sniffio in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai<3,>=2.7.1->openai-agents) (1.3.1)
+Requirement already satisfied: tqdm>4 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from openai<3,>=2.7.1->openai-agents) (4.67.1)
+Requirement already satisfied: certifi in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from httpx) (2025.1.31)
+Requirement already satisfied: httpcore==1.* in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from httpx) (1.0.9)
+Requirement already satisfied: idna in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from httpx) (3.10)
+Requirement already satisfied: h11>=0.16 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from httpcore==1.*->httpx) (0.16.0)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from pydantic<3,>=2.12.3->openai-agents) (0.7.0)
+Collecting pydantic-core==2.41.5 (from pydantic<3,>=2.12.3->openai-agents)
+  Using cached pydantic_core-2.41.5-cp313-cp313-win_amd64.whl.metadata (7.4 kB)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from requests<3,>=2.0->openai-agents) (3.4.1)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from requests<3,>=2.0->openai-agents) (2.3.0)
+Requirement already satisfied: attrs>=22.2.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from jsonschema>=4.20.0->mcp<2,>=1.11.0->openai-agents) (25.1.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from jsonschema>=4.20.0->mcp<2,>=1.11.0->openai-agents) (2024.10.1)
+Requirement already satisfied: referencing>=0.28.4 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from jsonschema>=4.20.0->mcp<2,>=1.11.0->openai-agents) (0.36.2)
+Requirement already satisfied: rpds-py>=0.7.1 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from jsonschema>=4.20.0->mcp<2,>=1.11.0->openai-agents) (0.23.1)
+Requirement already satisfied: python-dotenv>=0.21.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from pydantic-settings>=2.5.2->mcp<2,>=1.11.0->openai-agents) (1.0.1)
+Requirement already satisfied: cryptography>=3.4.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from pyjwt[crypto]>=2.10.1->mcp<2,>=1.11.0->openai-agents) (43.0.1)
+Requirement already satisfied: cffi>=1.12 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp<2,>=1.11.0->openai-agents) (1.17.1)
+Requirement already satisfied: pycparser in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from cffi>=1.12->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp<2,>=1.11.0->openai-agents) (2.22)
+Requirement already satisfied: click>=7.0 in c:\users\hp\appdata\local\programs\python\python313\lib\site-packages (from uvicorn>=0.31.1->mcp<2,>=1.11.0->openai-agents) (8.1.8)
+Downloading openai-2.12.0-py3-none-any.whl (1.1 MB)
+   -------------------                      0.5/1.1 MB 16.0 kB/s eta 0:00:34
+WARNING: Connection timed out while downloading.
+WARNING: Attempting to resume incomplete download (524 kB/1.1 MB, attempt 1)
+Resuming download openai-2.12.0-py3-none-any.whl (524 kB/1.1 MB)
+   -------------------                      0.5/1.1 MB ? eta -:--:--
+WARNING: Connection timed out while downloading.
+WARNING: Attempting to resume incomplete download (524 kB/1.1 MB, attempt 2)
+Resuming download openai-2.12.0-py3-none-any.whl (524 kB/1.1 MB)
+   ---------------------------------------- 1.1/1.1 MB 25.6 kB/s  0:00:21
+Using cached anyio-4.12.0-py3-none-any.whl (113 kB)
+Using cached pydantic-2.12.5-py3-none-any.whl (463 kB)
+Using cached pydantic_core-2.41.5-cp313-cp313-win_amd64.whl (2.0 MB)
+Installing collected packages: pydantic-core, anyio, pydantic, openai
+  Attempting uninstall: pydantic-core
+    Found existing installation: pydantic_core 2.23.4
+    Uninstalling pydantic_core-2.23.4:
+      Successfully uninstalled pydantic_core-2.23.4
+  WARNING: Failed to remove contents in a temporary directory 'C:\Users\HP\AppData\Local\Programs\Python\Python313\Lib\site-packages\~ydantic_core'.
+  You can safely remove it manually.
+  Attempting uninstall: anyio
+    Found existing installation: anyio 3.7.1
+    Uninstalling anyio-3.7.1:
+      Successfully uninstalled anyio-3.7.1
+  Attempting uninstall: pydantic
+    Found existing installation: pydantic 2.9.2
+    Uninstalling pydantic-2.9.2:
+      Successfully uninstalled pydantic-2.9.2
+  Attempting uninstall: openai
+    Found existing installation: openai 1.52.2
+    Uninstalling openai-1.52.2:
+      Successfully uninstalled openai-1.52.2
+
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+chainlit 2.9.2 requires fastapi>=0.116.1, but you have fastapi 0.115.0 which is incompatible.
+chainlit 2.9.2 requires pydantic-settings>=2.10.1, but you have pydantic-settings 2.7.0 which is incompatible.
+chainlit 2.9.2 requires starlette>=0.47.2, but you have starlette 0.38.6 which is incompatible.
+chainlit 2.9.2 requires uvicorn>=0.35.0, but you have uvicorn 0.32.0 which is incompatible.
+Successfully installed anyio-4.12.0 openai-2.12.0 pydantic-2.12.5 pydantic-core-2.41.5

@@ -1,0 +1,282 @@
+/**
+ * Global Translation and RTL Styles
+ *
+ * Provides global styles for RTL (Right-to-Left) text rendering,
+ * specifically optimized for Urdu translation display.
+ *
+ * Import this CSS in components that need RTL support:
+ * import '@site/src/css/translation.css';
+ */
+
+/* Urdu Font Import (Google Fonts - Noto Nastaliq Urdu) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
+
+/* RTL Container Base Styles */
+.rtl-container {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: isolate;
+}
+
+.ltr-container {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
+/* Urdu Text Styling */
+.urdu-text {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Alvi Nastaleeq', 'Nafees Web Naskh', Arial, sans-serif;
+  font-size: 1.125rem;
+  line-height: 2;
+  letter-spacing: 0.01em;
+}
+
+/* Headings in Urdu */
+.urdu-text h1,
+.urdu-text h2,
+.urdu-text h3,
+.urdu-text h4,
+.urdu-text h5,
+.urdu-text h6 {
+  font-family: 'Noto Nastaliq Urdu', sans-serif;
+  font-weight: 600;
+  line-height: 1.8;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Code Blocks Inside RTL Text (preserve LTR) */
+.urdu-text code,
+.urdu-text pre,
+.rtl-container code,
+.rtl-container pre {
+  direction: ltr !important;
+  text-align: left !important;
+  font-family: 'Courier New', Courier, monospace !important;
+  unicode-bidi: embed;
+}
+
+/* Inline Code */
+.urdu-text code {
+  background-color: rgba(175, 184, 193, 0.2);
+  border-radius: 3px;
+  padding: 0.2em 0.4em;
+  font-size: 0.85em;
+}
+
+/* Code Blocks */
+.urdu-text pre {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+/* Lists in RTL */
+.urdu-text ul,
+.urdu-text ol,
+.rtl-container ul,
+.rtl-container ol {
+  padding-right: 2rem;
+  padding-left: 0;
+  margin-right: 0;
+}
+
+.urdu-text li {
+  text-align: right;
+}
+
+/* Links in Urdu Text */
+.urdu-text a {
+  color: #0969da;
+  text-decoration: none;
+  unicode-bidi: embed;
+}
+
+.urdu-text a:hover {
+  text-decoration: underline;
+}
+
+/* Blockquotes in RTL */
+.urdu-text blockquote,
+.rtl-container blockquote {
+  border-right: 4px solid #d0d7de;
+  border-left: none;
+  padding-right: 1rem;
+  padding-left: 0;
+  margin-right: 0;
+  margin-left: 1rem;
+  color: #57606a;
+}
+
+/* Tables in RTL (flip direction but keep content readable) */
+.urdu-text table,
+.rtl-container table {
+  direction: rtl;
+  text-align: right;
+}
+
+.urdu-text th,
+.urdu-text td {
+  text-align: right;
+  padding: 0.75rem 1rem;
+}
+
+/* Mixed Content (English + Urdu) */
+.mixed-lang {
+  unicode-bidi: plaintext;
+}
+
+/* Numbers and Dates (keep LTR even in RTL context) */
+.ltr-numbers,
+.urdu-text .number,
+.urdu-text time {
+  direction: ltr;
+  unicode-bidi: embed;
+  display: inline-block;
+}
+
+/* Translation Toggle Buttons */
+.translation-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.translation-toggle:hover {
+  background-color: #eaeef2;
+}
+
+.translation-toggle:active {
+  background-color: #d0d7de;
+}
+
+/* Translation Indicator Badge */
+.translation-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #0969da;
+  border-radius: 12px;
+}
+
+/* Loading State for Translation */
+.translation-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  color: #57606a;
+  font-style: italic;
+}
+
+.translation-loading::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(9, 105, 218, 0.2);
+  border-top-color: #0969da;
+  border-radius: 50%;
+  animation: translation-spin 0.6s linear infinite;
+}
+
+@keyframes translation-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .urdu-text code {
+    background-color: rgba(110, 118, 129, 0.4);
+  }
+
+  .urdu-text pre {
+    background-color: #161b22;
+  }
+
+  .urdu-text a {
+    color: #58a6ff;
+  }
+
+  .urdu-text blockquote,
+  .rtl-container blockquote {
+    border-right-color: #30363d;
+    color: #8b949e;
+  }
+
+  .translation-toggle {
+    background-color: #161b22;
+    border-color: #30363d;
+  }
+
+  .translation-toggle:hover {
+    background-color: #21262d;
+  }
+
+  .translation-toggle:active {
+    background-color: #30363d;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .translation-toggle,
+  .translation-badge {
+    display: none !important;
+  }
+
+  .urdu-text,
+  .rtl-container {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+/* Accessibility: High Contrast Mode */
+@media (prefers-contrast: high) {
+  .urdu-text {
+    font-weight: 500;
+  }
+
+  .urdu-text a {
+    text-decoration: underline;
+  }
+}
+
+/* Responsive Typography for Mobile */
+@media (max-width: 768px) {
+  .urdu-text {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .urdu-text h1 {
+    font-size: 1.75rem;
+  }
+
+  .urdu-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .urdu-text h3 {
+    font-size: 1.25rem;
+  }
+}

@@ -1,0 +1,23 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Vector Ingestion Pipeline for Docusaurus book content"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.9.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",  # Required for XML parsing (sitemaps)
+    "qdrant-client>=1.8.0",
+    "cohere>=5.5.0",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "python-dotenv>=1.0.0",
+    "openai-agents>=0.6.3",
+    "httpx>=0.26.0",
+    "deep-translator>=1.11.4",  # For Urdu translation
+    "asyncpg>=0.29.0",  # Neon PostgreSQL adapter
+    "bcrypt>=4.1.1",  # Password hashing
+    "python-jose[cryptography]>=3.3.0",  # JWT encoding/decoding
+    "passlib[bcrypt]>=1.7.4",  # Password hashing utilities
+]

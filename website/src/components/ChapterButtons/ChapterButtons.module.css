@@ -1,0 +1,72 @@
+.chapterButtonsContainer {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background-color: #f7e9d4; /* Cream background */
+  border-radius: 8px;
+  border: 1px solid #d4c3a9; /* Subtle border */
+  font-family: serif;
+}
+
+.chapterButton {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.personalizeButton {
+  background-color: #210a53; /* Dark brown */
+  color: #f7e9d4; /* Cream text */
+}
+
+.personalizeButton:hover:not(:disabled) {
+  background-color: #3d2617; /* Slightly lighter brown */
+}
+
+.translateButton {
+  background-color: #8b7355; /* Medium brown */
+  color: #f7e9d4; /* Cream text */
+}
+
+.translateButton:hover:not(:disabled) {
+  background-color: #a68c66; /* Lighter brown */
+}
+
+.chapterButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.textSelectionHelper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Make it not interfere with other interactions */
+}
+
+/* For Urdu text rendering */
+[dir="rtl"] {
+  text-align: right;
+  direction: rtl;
+}
+
+@media (max-width: 768px) {
+  .chapterButtonsContainer {
+    flex-direction: column;
+  }
+
+  .chapterButton {
+    width: 100%;
+  }
+}

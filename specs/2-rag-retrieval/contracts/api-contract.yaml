@@ -1,0 +1,569 @@
+openapi: 3.0.3
+info:
+  title: RAG Retrieval Pipeline API
+  description: |
+    Semantic search API for retrieving relevant humanoid robotics book content from Qdrant vector database.
+
+    **Features**:
+    - Semantic search with natural language queries
+    - Configurable top-k results (1-20)
+    - Optional metadata filtering
+    - Test suite validation endpoint
+    - Performance metrics tracking
+
+    **Authentication**: None (internal API)
+
+    **Rate Limits**: No explicit limits (controlled by Cohere and Qdrant service limits)
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.example.com
+    description: Production server (TBD)
+
+tags:
+  - name: search
+    description: Semantic search operations
+  - name: test
+    description: Quality validation and testing
+  - name: health
+    description: Service health and status
+
+paths:
+  /search:
+    post:
+      summary: Semantic search
+      description: |
+        Performs semantic search over embedded book content using natural language queries.
+
+        **Process**:
+        1. Converts query to embedding vector using Cohere API
+        2. Searches Qdrant collection for similar vectors
+        3. Returns top-k most relevant chunks with metadata
+
+        **Performance**: Typical latency 300-800ms
+      operationId: search
+      tags:
+        - search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              basic:
+                summary: Basic search query
+                value:
+                  query: "What is inverse kinematics?"
+                  top_k: 5
+              with_filters:
+                summary: Search with URL filter
+                value:
+                  query: "How do bipedal robots walk?"
+                  top_k: 10
+                  filters:
+                    url_contains: "locomotion"
+              narrow_search:
+                summary: Narrow search in specific module
+                value:
+                  query: "Explain computer vision for robots"
+                  top_k: 3
+                  filters:
+                    url_contains: "module2"
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              examples:
+                with_results:
+                  summary: Successful search with results
+                  value:
+                    query: "What is inverse kinematics?"
+                    results:
+                      - text: "Inverse kinematics (IK) is the process of determining joint angles that achieve a desired end effector position..."
+                        score: 0.89
+                        metadata:
+                          url: "https://physical-ai-and-humanoid-robotics-t-two.vercel.app/docs/module1/chapter3-kinematics"
+                          chunk_index: 5
+                          source: "website"
+                      - text: "The inverse kinematics problem can be solved using analytical or numerical methods..."
+                        score: 0.82
+                        metadata:
+                          url: "https://physical-ai-and-humanoid-robotics-t-two.vercel.app/docs/module1/chapter3-kinematics"
+                          chunk_index: 7
+                          source: "website"
+                    total_results: 5
+                    latency_ms: 567
+                    filters_applied: null
+                    message: null
+                no_results:
+                  summary: Search with no results
+                  value:
+                    query: "quantum entanglement in robots"
+                    results: []
+                    total_results: 0
+                    latency_ms: 423
+                    filters_applied: null
+                    message: "No relevant content found for this query"
+        '400':
+          description: Invalid request (validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                empty_query:
+                  summary: Empty query string
+                  value:
+                    detail:
+                      - type: "value_error"
+                        loc: ["body", "query"]
+                        msg: "Query cannot be empty or whitespace only"
+                        input: "   "
+                invalid_top_k:
+                  summary: top_k out of range
+                  value:
+                    detail:
+                      - type: "value_error"
+                        loc: ["body", "top_k"]
+                        msg: "Input should be less than or equal to 20"
+                        input: 50
+                invalid_filter:
+                  summary: Invalid filter key
+                  value:
+                    detail:
+                      - type: "value_error"
+                        loc: ["body", "filters"]
+                        msg: "Invalid filter keys: {'invalid_key'}. Allowed keys: {'url_contains', 'url_exact', 'source', 'chunk_index'}"
+                        input: {"invalid_key": "value"}
+        '503':
+          description: Service unavailable (Cohere or Qdrant down)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+              examples:
+                embedding_error:
+                  summary: Cohere API unavailable
+                  value:
+                    detail: "Embedding service unavailable"
+                search_error:
+                  summary: Qdrant connection failed
+                  value:
+                    detail: "Search service unavailable"
+
+  /test-retrieval:
+    post:
+      summary: Run retrieval quality tests
+      description: |
+        Executes predefined test queries to validate retrieval accuracy and quality.
+
+        **Test Suite**: 20 queries covering major topics (Fundamentals, Simulation, Control, AI)
+
+        **Success Criteria**: 85% of queries return expected content in top-5 results
+
+        **Use Cases**:
+        - Validate retrieval quality after ingestion
+        - Monitor accuracy over time
+        - Benchmark different embedding models
+      operationId: test_retrieval
+      tags:
+        - test
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRetrievalRequest'
+            examples:
+              all_queries:
+                summary: Run all test queries
+                value:
+                  query_ids: null
+                  top_k: 5
+              specific_queries:
+                summary: Run specific test queries
+                value:
+                  query_ids: [1, 2, 3, 11, 16]
+                  top_k: 5
+              top_10:
+                summary: Test with top-10 results
+                value:
+                  query_ids: null
+                  top_k: 10
+      responses:
+        '200':
+          description: Test suite completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestRetrievalResponse'
+              examples:
+                passing:
+                  summary: Test suite passing (≥85%)
+                  value:
+                    total_queries: 20
+                    successful_queries: 17
+                    success_rate: 0.85
+                    meets_target: true
+                    results:
+                      - query_id: 1
+                        query_text: "What is inverse kinematics?"
+                        expected_chapter: "chapter3-kinematics"
+                        found_in_top_k: true
+                        top_result_url: "https://...chapter3-kinematics"
+                        top_result_score: 0.89
+                    avg_latency_ms: 523
+                failing:
+                  summary: Test suite failing (<85%)
+                  value:
+                    total_queries: 20
+                    successful_queries: 14
+                    success_rate: 0.70
+                    meets_target: false
+                    results: []
+                    avg_latency_ms: 567
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+
+  /health:
+    get:
+      summary: Health check
+      description: |
+        Verifies service health and connectivity to dependencies.
+
+        **Checks**:
+        - Qdrant connection
+        - Collection existence
+        - Cohere API availability
+      operationId: health_check
+      tags:
+        - health
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                qdrant_connected: true
+                collection_exists: true
+                collection_vectors_count: 403
+                cohere_available: true
+        '503':
+          description: Service unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "unhealthy"
+                qdrant_connected: false
+                collection_exists: false
+                collection_vectors_count: 0
+                cohere_available: true
+
+components:
+  schemas:
+    SearchRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: Natural language query text
+          example: "What is inverse kinematics?"
+        top_k:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 5
+          description: Number of results to return
+          example: 5
+        filters:
+          type: object
+          nullable: true
+          description: Optional metadata filters
+          properties:
+            url_contains:
+              type: string
+              description: Substring match in URL
+              example: "module1"
+            url_exact:
+              type: string
+              description: Exact URL match
+              example: "https://physical-ai-and-humanoid-robotics-t-two.vercel.app/docs/module1/chapter3-kinematics"
+            source:
+              type: string
+              description: Source type
+              example: "website"
+            chunk_index:
+              type: integer
+              description: Specific chunk index
+              example: 5
+
+    SearchResponse:
+      type: object
+      required:
+        - query
+        - results
+        - total_results
+        - latency_ms
+      properties:
+        query:
+          type: string
+          description: Original query text
+          example: "What is inverse kinematics?"
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievedChunk'
+          description: Retrieved chunks ordered by relevance
+        total_results:
+          type: integer
+          minimum: 0
+          description: Number of results returned
+          example: 5
+        latency_ms:
+          type: integer
+          minimum: 0
+          description: Query processing time in milliseconds
+          example: 567
+        filters_applied:
+          type: object
+          nullable: true
+          description: Filters that were applied
+          example: {"url_contains": "module1"}
+        message:
+          type: string
+          nullable: true
+          description: Optional message (e.g., for empty results)
+          example: "No relevant content found for this query"
+
+    RetrievedChunk:
+      type: object
+      required:
+        - text
+        - score
+        - metadata
+      properties:
+        text:
+          type: string
+          description: Chunk text content
+          example: "Inverse kinematics (IK) is the process of determining joint angles..."
+        score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Similarity score (0.0-1.0)
+          example: 0.87
+        metadata:
+          $ref: '#/components/schemas/ChunkMetadata'
+
+    ChunkMetadata:
+      type: object
+      required:
+        - url
+        - chunk_index
+        - source
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Source URL
+          example: "https://physical-ai-and-humanoid-robotics-t-two.vercel.app/docs/module1/chapter3-kinematics"
+        chunk_index:
+          type: integer
+          minimum: 0
+          description: Chunk index within source document
+          example: 5
+        source:
+          type: string
+          description: Source type
+          example: "website"
+
+    TestRetrievalRequest:
+      type: object
+      properties:
+        query_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+            maximum: 20
+          nullable: true
+          description: Specific query IDs to run (null = all)
+          example: [1, 2, 3, 11]
+        top_k:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 5
+          description: Number of results per query
+          example: 5
+
+    TestRetrievalResponse:
+      type: object
+      required:
+        - total_queries
+        - successful_queries
+        - success_rate
+        - meets_target
+        - results
+        - avg_latency_ms
+      properties:
+        total_queries:
+          type: integer
+          description: Total test queries run
+          example: 20
+        successful_queries:
+          type: integer
+          description: Queries that returned expected content
+          example: 17
+        success_rate:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Success rate (successful/total)
+          example: 0.85
+        meets_target:
+          type: boolean
+          description: Whether success rate meets 85% target
+          example: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestResult'
+          description: Detailed results per query
+        avg_latency_ms:
+          type: integer
+          description: Average latency per query in ms
+          example: 523
+
+    TestResult:
+      type: object
+      required:
+        - query_id
+        - query_text
+        - expected_chapter
+        - found_in_top_k
+        - top_result_url
+        - top_result_score
+      properties:
+        query_id:
+          type: integer
+          description: Test query ID (1-20)
+          example: 1
+        query_text:
+          type: string
+          description: Query text
+          example: "What is inverse kinematics?"
+        expected_chapter:
+          type: string
+          description: Expected chapter pattern
+          example: "chapter3-kinematics"
+        found_in_top_k:
+          type: boolean
+          description: Whether expected content found in top-k
+          example: true
+        top_result_url:
+          type: string
+          description: URL of top result
+          example: "https://...chapter3-kinematics"
+        top_result_score:
+          type: number
+          format: float
+          description: Score of top result
+          example: 0.89
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - qdrant_connected
+        - collection_exists
+        - cohere_available
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Overall service status
+          example: "healthy"
+        qdrant_connected:
+          type: boolean
+          description: Qdrant connection status
+          example: true
+        collection_exists:
+          type: boolean
+          description: Whether target collection exists
+          example: true
+        collection_vectors_count:
+          type: integer
+          description: Number of vectors in collection
+          example: 403
+        cohere_available:
+          type: boolean
+          description: Cohere API availability
+          example: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          oneOf:
+            - type: string
+              description: Simple error message
+              example: "Query cannot be empty"
+            - type: array
+              description: Validation errors
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: "value_error"
+                  loc:
+                    type: array
+                    items:
+                      type: string
+                    example: ["body", "query"]
+                  msg:
+                    type: string
+                    example: "Query cannot be empty"
+                  input:
+                    description: Invalid input value
+
+    ServiceError:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: Error message
+          example: "Embedding service unavailable"

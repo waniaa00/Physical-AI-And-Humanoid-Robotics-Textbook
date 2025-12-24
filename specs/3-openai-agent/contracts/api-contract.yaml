@@ -1,0 +1,644 @@
+openapi: 3.0.3
+info:
+  title: Humanoid Robotics RAG Agent API
+  description: |
+    AI agent powered by OpenAI Agents SDK for answering questions about humanoid robotics.
+
+    **Features**:
+    - Retrieval-augmented generation (RAG) with book content grounding
+    - Multi-turn conversational context with session management
+    - Dual-mode operation: full-book search vs. context-constrained explanations
+    - Citation transparency with source URLs and relevance scores
+    - Hallucination prevention through strict grounding policy
+
+    **Modes**:
+    1. **Full-Book Mode**: Agent retrieves relevant content from entire book corpus using semantic search
+    2. **Context-Constrained Mode**: Agent answers based solely on user-provided selected text (no retrieval)
+
+    **Session Management**:
+    - Sessions persist conversation history across multiple turns
+    - Use unique `session_id` per conversation thread
+    - Sessions stored in SQLite database (configurable)
+
+    **Citation Format**:
+    - Inline citations: `[Source 1]`, `[Source 2]`, etc.
+    - Sources section at end with URLs and metadata
+    - Structured response option for programmatic access
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.example.com
+    description: Production server
+
+tags:
+  - name: Agent
+    description: RAG agent chat endpoints
+  - name: Health
+    description: Service health and diagnostics
+
+paths:
+  /agent/chat:
+    post:
+      tags:
+        - Agent
+      summary: Chat with RAG agent
+      description: |
+        Send a question to the RAG agent and receive a grounded, cited response.
+
+        **Behavior**:
+        - If `context_text` is null/omitted: **Full-Book Mode** - Agent retrieves relevant chunks from book
+        - If `context_text` provided: **Context-Constrained Mode** - Agent answers based only on provided text
+
+        **Multi-Turn Conversations**:
+        - Use same `session_id` across requests to maintain conversation history
+        - Agent remembers previous questions and answers automatically
+        - Follow-up questions leverage prior context (e.g., "What about balance control?" after asking about ZMP)
+
+        **Response Grounding**:
+        - All answers strictly grounded in retrieved/provided content
+        - No hallucination or external knowledge injection
+        - Inline citations with source URLs
+        - Refusal to answer when no relevant content found
+
+        **Performance**:
+        - Expected latency: 1.5-4 seconds (includes retrieval + LLM generation)
+        - Max conversation history: 50 turns (auto-truncated)
+        - Max retrieval results: 5 chunks (configurable in tool)
+      operationId: chatWithAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequestWithContext'
+            examples:
+              full_book_mode:
+                summary: Full-book mode (no context provided)
+                value:
+                  message: "What is the zero-moment point in humanoid robotics?"
+                  session_id: "user_123_conv_456"
+                  context_text: null
+              context_constrained_mode:
+                summary: Context-constrained mode (selected text provided)
+                value:
+                  message: "Explain this concept in simple terms"
+                  session_id: "user_123_conv_789"
+                  context_text: "The zero-moment point (ZMP) is the point on the ground where the total sum of inertial and gravitational forces equals zero. It is widely used in humanoid robot control for maintaining balance during locomotion."
+              follow_up_question:
+                summary: Follow-up question in multi-turn conversation
+                value:
+                  message: "What about its application in balance control?"
+                  session_id: "user_123_conv_456"
+                  context_text: null
+      responses:
+        '200':
+          description: Successful response with cited answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+              examples:
+                success:
+                  summary: Successful response with citations
+                  value:
+                    response: |
+                      The zero-moment point (ZMP) is a fundamental concept in humanoid robot balance control [Source 1]. It represents the point on the ground where the sum of all inertial and gravitational moments equals zero [Source 2]. The ZMP is used to ensure dynamic stability during walking and other movements [Source 1].
+
+                      Sources:
+                      - [Source 1] https://example.com/humanoid-robotics/chapter3
+                      - [Source 2] https://example.com/humanoid-robotics/chapter5
+                    session_id: "user_123_conv_456"
+                    status: "success"
+                no_relevant_content:
+                  summary: No relevant content found
+                  value:
+                    response: "I couldn't find relevant information in the book to answer your question about quantum entanglement. This topic may not be covered in the humanoid robotics textbook. Could you ask about a robotics-related topic instead?"
+                    session_id: "user_123_conv_456"
+                    status: "success"
+                context_constrained_response:
+                  summary: Context-constrained mode response
+                  value:
+                    response: "Based on the provided text, the zero-moment point (ZMP) is a point on the ground where forces balance out to zero. In simpler terms, it's like finding the 'sweet spot' on the floor where a robot can stand or walk without tipping over. The ZMP helps engineers design robots that can maintain balance while moving, just like how you adjust your weight when walking on a balance beam."
+                    session_id: "user_123_conv_789"
+                    status: "success"
+        '400':
+          description: Invalid request (validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "VALIDATION_ERROR"
+                  message: "message must be at least 1 character"
+                  details: "Field validation failed for 'message'"
+                session_id: null
+        '422':
+          description: Guardrail triggered (off-topic question)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+              example:
+                response: "Your question appears to be outside the scope of this assistant. Please ask about humanoid robotics topics covered in the textbook."
+                session_id: "user_123_conv_456"
+                status: "guardrail_triggered"
+        '500':
+          description: Internal server error (retrieval failure, agent error, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "RETRIEVAL_FAILED"
+                  message: "The search service is currently unavailable. Please try again later."
+                  details: null
+                session_id: "user_123_conv_456"
+
+  /agent/chat/structured:
+    post:
+      tags:
+        - Agent
+      summary: Chat with RAG agent (structured response)
+      description: |
+        Alternative endpoint returning structured response with programmatically accessible citations.
+
+        **Use Cases**:
+        - Frontend needs explicit citation list for UI rendering (clickable sources)
+        - Confidence level display based on retrieval scores
+        - Mode detection for debugging (full-book vs. context-constrained)
+
+        **Differences from /agent/chat**:
+        - Returns `GroundedResponse` instead of `ChatResponse`
+        - Citations extracted into `sources` array
+        - Includes `confidence` and `retrieval_mode` metadata
+        - May have slightly reduced natural language quality due to structured output constraints
+
+        **Model Requirements**:
+        - Requires GPT-4 or newer (structured output support)
+        - Falls back to /agent/chat behavior if model doesn't support structured outputs
+      operationId: chatWithAgentStructured
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            example:
+              message: "What is the zero-moment point?"
+              session_id: "user_123_conv_456"
+      responses:
+        '200':
+          description: Successful structured response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroundedResponse'
+              example:
+                answer: "The zero-moment point (ZMP) is a fundamental concept in humanoid robot balance control [Source 1]. It represents the point on the ground where the sum of all inertial and gravitational moments equals zero [Source 2]."
+                sources:
+                  - source_number: 1
+                    url: "https://example.com/humanoid-robotics/chapter3"
+                    score: 0.892
+                  - source_number: 2
+                    url: "https://example.com/humanoid-robotics/chapter5"
+                    score: 0.854
+                confidence: "High"
+                retrieval_mode: "full_book"
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /agent/session/{session_id}:
+    get:
+      tags:
+        - Agent
+      summary: Retrieve conversation history
+      description: |
+        Retrieve full conversation history for a session.
+
+        **Use Cases**:
+        - Display conversation history in UI
+        - Debug agent behavior
+        - Export conversations for analysis
+
+        **Response**:
+        - Returns chronological list of all messages (user, assistant, tool)
+        - Includes timestamps for each message
+        - Tool call details included for debugging
+      operationId: getSessionHistory
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-zA-Z0-9_\-]+$'
+          description: Unique session identifier
+          example: "user_123_conv_456"
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+          description: Maximum number of messages to return (most recent)
+          example: 20
+      responses:
+        '200':
+          description: Conversation history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session_id:
+                    type: string
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConversationMessage'
+                  total_count:
+                    type: integer
+                    description: Total number of messages in session
+              example:
+                session_id: "user_123_conv_456"
+                messages:
+                  - role: "user"
+                    content: "What is the zero-moment point?"
+                    timestamp: "2025-12-15T10:30:00Z"
+                    tool_call_id: null
+                  - role: "tool"
+                    content: "[Source 1] URL: https://example.com/chapter3..."
+                    timestamp: "2025-12-15T10:30:02Z"
+                    tool_call_id: "call_abc123"
+                  - role: "assistant"
+                    content: "The zero-moment point (ZMP) is..."
+                    timestamp: "2025-12-15T10:30:05Z"
+                    tool_call_id: null
+                total_count: 3
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: "SESSION_NOT_FOUND"
+                  message: "No session found with ID: user_123_conv_999"
+                  details: null
+                session_id: "user_123_conv_999"
+
+    delete:
+      tags:
+        - Agent
+      summary: Clear conversation history
+      description: |
+        Clear all messages from a session.
+
+        **Use Cases**:
+        - User requests conversation reset
+        - Testing and development
+        - Privacy compliance (GDPR right to be forgotten)
+
+        **Effect**:
+        - Deletes all messages for session_id from database
+        - Subsequent requests with same session_id start fresh conversation
+      operationId: clearSession
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema:
+            type: string
+          description: Session ID to clear
+      responses:
+        '204':
+          description: Session cleared successfully (no content)
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Service health check
+      description: |
+        Check health status of RAG agent service and dependencies.
+
+        **Checks**:
+        - OpenAI API connectivity and model availability
+        - Backend /search endpoint reachability
+        - SQLite session database access
+        - Overall service status
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                timestamp: "2025-12-15T10:30:00Z"
+                checks:
+                  openai_api: "healthy"
+                  search_endpoint: "healthy"
+                  session_database: "healthy"
+                version: "1.0.0"
+        '503':
+          description: Service is unhealthy (dependency failure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "unhealthy"
+                timestamp: "2025-12-15T10:30:00Z"
+                checks:
+                  openai_api: "healthy"
+                  search_endpoint: "unhealthy"
+                  session_database: "healthy"
+                version: "1.0.0"
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - message
+        - session_id
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          description: User's question about humanoid robotics
+          example: "What is the zero-moment point in humanoid robotics?"
+        session_id:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: '^[a-zA-Z0-9_\-]+$'
+          description: Unique session identifier for conversation continuity
+          example: "user_123_conv_456"
+
+    ChatRequestWithContext:
+      type: object
+      required:
+        - message
+        - session_id
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          description: User's question or request for explanation
+          example: "What is the zero-moment point?"
+        session_id:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: '^[a-zA-Z0-9_\-]+$'
+          description: Unique session identifier
+          example: "user_123_conv_456"
+        context_text:
+          type: string
+          nullable: true
+          maxLength: 10000
+          description: |
+            Optional selected text from book for context-constrained answering.
+            When provided, agent will NOT perform retrieval and will answer based solely on this text.
+          example: null
+
+    ChatResponse:
+      type: object
+      required:
+        - response
+        - session_id
+        - status
+      properties:
+        response:
+          type: string
+          description: Agent's answer with inline [Source N] citations and Sources section
+          example: |
+            The zero-moment point (ZMP) is used for balance control [Source 1].
+
+            Sources:
+            - [Source 1] https://example.com/chapter3
+        session_id:
+          type: string
+          description: Echo of session_id from request
+          example: "user_123_conv_456"
+        status:
+          type: string
+          enum: [success, guardrail_triggered, citation_validation_failed, error]
+          description: Request processing status
+          example: "success"
+
+    Citation:
+      type: object
+      required:
+        - source_number
+        - url
+        - score
+      properties:
+        source_number:
+          type: integer
+          minimum: 1
+          maximum: 20
+          description: Source number (1-indexed) referenced as [Source N] in answer
+          example: 1
+        url:
+          type: string
+          description: URL of the book page or section
+          example: "https://example.com/humanoid-robotics/chapter3"
+        score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Relevance score from vector search
+          example: 0.892
+
+    GroundedResponse:
+      type: object
+      required:
+        - answer
+        - sources
+        - confidence
+        - retrieval_mode
+      properties:
+        answer:
+          type: string
+          description: Agent's answer with inline [Source N] citations
+          example: "The zero-moment point (ZMP) is used for balance control [Source 1]."
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+          minItems: 0
+          maxItems: 20
+          description: List of all sources cited in the answer
+        confidence:
+          type: string
+          enum: [High, Medium, Low]
+          description: Confidence level based on retrieval scores
+          example: "High"
+        retrieval_mode:
+          type: string
+          enum: [full_book, context_constrained]
+          description: Mode used for answering
+          example: "full_book"
+
+    ConversationMessage:
+      type: object
+      required:
+        - role
+        - content
+        - timestamp
+      properties:
+        role:
+          type: string
+          enum: [user, assistant, system, tool]
+          description: Message sender role
+          example: "user"
+        content:
+          type: string
+          description: Message content
+          example: "What is the zero-moment point?"
+        timestamp:
+          type: string
+          format: date-time
+          description: UTC timestamp when message was created
+          example: "2025-12-15T10:30:00Z"
+        tool_call_id:
+          type: string
+          nullable: true
+          description: Tool call ID for tool messages
+          example: null
+
+    ErrorDetail:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling
+          example: "RETRIEVAL_FAILED"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "The search service is currently unavailable."
+        details:
+          type: string
+          nullable: true
+          description: Additional error details (only in dev mode)
+          example: null
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+        session_id:
+          type: string
+          nullable: true
+          description: Session ID from request if available
+          example: "user_123_conv_456"
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+        - checks
+        - version
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Overall service health status
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp (UTC)
+          example: "2025-12-15T10:30:00Z"
+        checks:
+          type: object
+          description: Individual dependency health checks
+          properties:
+            openai_api:
+              type: string
+              enum: [healthy, unhealthy]
+            search_endpoint:
+              type: string
+              enum: [healthy, unhealthy]
+            session_database:
+              type: string
+              enum: [healthy, unhealthy]
+        version:
+          type: string
+          description: API version
+          example: "1.0.0"
+
+  responses:
+    ValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "message must be at least 1 character"
+              details: "Field validation failed for 'message'"
+            session_id: null
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "INTERNAL_ERROR"
+              message: "An unexpected error occurred. Please try again later."
+              details: null
+            session_id: "user_123_conv_456"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication (optional, for production deployment)
+
+security:
+  - ApiKeyAuth: []
+  - {}  # Allow unauthenticated access (development)

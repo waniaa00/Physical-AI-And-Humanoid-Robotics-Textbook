@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 title: "Chapter 2: ROS 2 Fundamentals"
+interests: ["ros2"]
 ---
 
 # Chapter 2: ROS 2 Fundamentals

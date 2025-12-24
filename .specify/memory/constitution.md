@@ -31,7 +31,7 @@
   Amendment Status: No amendments made
 -->
 
-# Physical AI & Humanoid Robotics Book Constitution
+# Physical AI & Humanoid Robotics Book Constitution with RAG Chatbot + BetterAuth Integration
 
 ## Core Principles
 
@@ -101,6 +101,31 @@
 - Build and deployment validation required before release
 - Educational effectiveness assessed through clarity, completeness, and pedagogical soundness
 
+### VIII. RAG Chatbot & Personalization Standards
+- RAG bot answers must only come from retrieved text content
+- If information is unknown, respond with "I don't know"
+- Always cite sources when providing answers
+- Personalization based on user's hardware/software background
+- Support for Urdu translation with RTL rendering
+- Chat history persistence and accessibility per user
+- Integration with BetterAuth for secure user authentication
+- Follow exact agent.py pattern with Cohere embeddings and Gemini LLM
+
+### IX. Frontend & UI/UX Standards
+- Floating chat widget with book-themed design (dark brown theme: #2e1b0e, color: #f7e9d4)
+- Support for RTL rendering for Urdu content
+- Minimal DOM intrusion while maintaining functionality
+- Cross-browser compatibility (Chrome + Firefox)
+- Responsive design for mobile devices
+- Intuitive interaction with personalization and translation features
+
+### X. Security & Privacy
+- Secure user authentication and session management via BetterAuth
+- Protection of user data and learning history
+- Proper access controls and authorization
+- Input validation and sanitization
+- Secure API communication and token management
+
 ## Technical Standards
 
 ### Mathematics & Notation
@@ -128,6 +153,22 @@
 - All diagrams have descriptive captions
 - Diagrams stored in `/docs/{chapter}/assets/` or equivalent
 
+### RAG & AI Standards
+- Use Cohere embeddings v3 with 1024 dimensions
+- Use Qdrant Cloud with cosine distance metric
+- Use Gemini-2.5-flash model via specified base URL
+- Implement @function_tool retrieve() with exact pattern
+- Query limit: 5 chunks from Qdrant
+- Ensure responses only from retrieved content
+- Implement proper error handling and fallbacks
+
+### Database Standards
+- Neon PostgreSQL for structured data storage
+- Proper indexing for performance optimization
+- Data validation and sanitization
+- Secure connection management
+- Backup and recovery procedures
+
 ## Content Constraints
 
 ### Scope
@@ -143,6 +184,14 @@
 - Compatible with GitHub Pages deployment
 - Responsive design considerations for diagrams and code blocks
 - Accessibility: alt text for images, semantic HTML structure
+
+### RAG Chatbot Constraints
+- Answers only from retrieved text content
+- No hallucinated responses beyond retrieved content
+- Follow exact ingestion logic without rewriting
+- Use specified Qdrant collection name
+- Maintain session-based privacy
+- No public history access
 
 ### Exclusions
 - Proprietary algorithms without public references
@@ -208,4 +257,4 @@
 - Periodic retrospectives on workflow effectiveness
 - Constitution evolves based on project learnings
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-04 | **Last Amended**: 2025-12-04
+**Version**: 1.0.1 | **Ratified**: 2025-12-04 | **Last Amended**: 2025-12-08
