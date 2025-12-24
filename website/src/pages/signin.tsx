@@ -19,6 +19,7 @@ export default function SignIn() {
     languagePreference: 'en' as 'en' | 'ur',
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,6 +32,7 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsSigningIn(true);
 
     try {
       // T041: Use AuthContext signIn method
@@ -54,6 +56,8 @@ export default function SignIn() {
       const errorMessage = err instanceof Error ? err.message : 'Sign in failed';
       setError(errorMessage);
       console.error('Sign in error:', err);
+    } finally {
+      setIsSigningIn(false);
     }
   };
 
@@ -169,8 +173,8 @@ export default function SignIn() {
                   </a>
                 </div>
 
-                <button type="submit" className={styles.submitButton}>
-                  Sign In
+                <button type="submit" className={styles.submitButton} disabled={isSigningIn}>
+                  {isSigningIn ? 'Signing In...' : 'Sign In'}
                 </button>
               </form>
 

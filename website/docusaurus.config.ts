@@ -15,13 +15,13 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://localhost',
+  url: 'https://physical-ai-and-humanoid-robotics-textbook.vercel.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config (will be configured later)
-  organizationName: 'HP', // Will be updated for GitHub Pages
+  // GitHub pages deployment config
+  organizationName: 'waniaa00', // GitHub username
   projectName: 'humanoid-robotics', // Project repository name
 
   onBrokenLinks: 'throw',
@@ -101,7 +101,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/HP/humanoid-robotics',
+          href: 'https://github.com/waniaa00/Physical-AI-And-Humanoid-Robotics-Textbook',
           label: 'GitHub',
           position: 'right',
         },
@@ -141,7 +141,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/HP/humanoid-robotics',
+              href: 'https://github.com/waniaa00/Physical-AI-And-Humanoid-Robotics-Textbook',
             },
           ],
         },
