@@ -63,7 +63,7 @@ export default function Profile() {
     setError(null);
 
     try {
-      const apiUrl = 'http://localhost:8000';
+      const apiUrl = 'https://wnxddev-humanoid-robotics-api.hf.space';
       const response = await fetch(`${apiUrl}/interests/${user.user_id}`);
 
       if (response.status === 404) {
@@ -126,7 +126,7 @@ export default function Profile() {
         throw new Error('User not authenticated');
       }
 
-      const apiUrl = 'http://localhost:8000';
+      const apiUrl = 'https://wnxddev-humanoid-robotics-api.hf.space';
       const response = await fetch(`${apiUrl}/interests/save`, {
         method: 'POST',
         headers: {

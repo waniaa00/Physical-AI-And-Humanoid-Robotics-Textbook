@@ -10,7 +10,7 @@
 import axios from 'axios';
 
 // Use localhost for development - browser environment
-export const API_BASE_URL = 'http://localhost:8000';
+export const API_BASE_URL = 'https://wnxddev-humanoid-robotics-api.hf.space';
 
 /**
  * Axios instance configured for authentication requests.

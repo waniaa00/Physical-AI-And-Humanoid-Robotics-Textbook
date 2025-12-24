@@ -62,7 +62,7 @@ export const TranslateButton: React.FC<TranslateButtonProps> = ({
 
     try {
       // Call translation API
-      const apiUrl = 'http://localhost:8000';
+      const apiUrl = 'https://wnxddev-humanoid-robotics-api.hf.space';
       const response = await fetch(`${apiUrl}/translate`, {
         method: 'POST',
         headers: {

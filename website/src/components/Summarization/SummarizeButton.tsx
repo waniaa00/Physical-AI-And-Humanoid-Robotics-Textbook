@@ -77,7 +77,7 @@ export const SummarizeButton: React.FC<SummarizeButtonProps> = ({
 
     try {
       // Call summarization API
-      const apiUrl = 'http://localhost:8000';
+      const apiUrl = 'https://wnxddev-humanoid-robotics-api.hf.space';
       const response = await fetch(`${apiUrl}/summarize`, {
         method: 'POST',
         headers: {

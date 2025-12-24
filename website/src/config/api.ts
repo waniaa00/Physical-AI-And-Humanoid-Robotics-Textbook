@@ -6,7 +6,7 @@
  */
 
 // Default to localhost for development
-export const API_BASE_URL = 'http://localhost:8000';
+export const API_BASE_URL = 'https://wnxddev-humanoid-robotics-api.hf.space';
 
 // For production, you can update this or use Docusaurus custom fields
 export const getApiUrl = (): string => {

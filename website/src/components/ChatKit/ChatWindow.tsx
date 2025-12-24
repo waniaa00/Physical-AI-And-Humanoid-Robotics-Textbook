@@ -44,7 +44,7 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
 
       // Fetch from backend to verify if not in user object
       try {
-        const apiUrl = 'http://localhost:8000';
+        const apiUrl = 'https://wnxddev-humanoid-robotics-api.hf.space';
         const response = await fetch(`${apiUrl}/interests/${user.user_id}`, {
           credentials: 'include', // Include session cookie
         });

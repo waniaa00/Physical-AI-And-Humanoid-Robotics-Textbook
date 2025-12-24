@@ -13,7 +13,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // Use localhost for development - Docusaurus runs in browser, not Node
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://wnxddev-humanoid-robotics-api.hf.space';
 
 interface User {
   user_id: string;

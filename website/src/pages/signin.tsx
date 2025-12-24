@@ -77,7 +77,7 @@ export default function SignIn() {
         throw new Error('User not authenticated. Please sign in first.');
       }
 
-      const apiUrl = 'http://localhost:8000';
+      const apiUrl = 'https://wnxddev-humanoid-robotics-api.hf.space';
 
       const response = await fetch(`${apiUrl}/interests/save`, {
         method: 'POST',
