@@ -8,8 +8,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Search API endpoint
-SEARCH_API_URL = "http://localhost:8000/search"
+# Search API endpoint - Use environment variable or default to HF Spaces
+import os
+SEARCH_API_URL = os.getenv("SEARCH_API_URL", "https://wnxddev-humanoid-robotics-api.hf.space/search")
 
 
 def format_retrieval_results(search_results: List[Dict[str, Any]]) -> str:

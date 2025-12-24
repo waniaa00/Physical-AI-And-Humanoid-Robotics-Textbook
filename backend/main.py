@@ -1036,31 +1036,75 @@ async def search(request: SearchRequest):
         if qdrant_filter:
             logger.info(f"Applying filters: {request.filters}")
 
-        # Step 3: Search Qdrant with maximum compatibility error handling
-        search_results = []  # Default to empty results
+        # Step 3: Search Qdrant with compatibility error handling
+        search_results = []
         try:
-            # Try the search operation, but be prepared for compatibility issues
+            # Primary search attempt
             search_results = qdrant_client.search(
                 collection_name=COLLECTION_NAME,
                 query_vector=query_vector,
                 limit=request.top_k,
                 query_filter=qdrant_filter
             )
+            logger.info(f"Qdrant search successful, found {len(search_results)} results")
         except Exception as e:
             error_msg = str(e)
             logger.error(f"Qdrant search error: {error_msg}")
 
-            # Check if it's the specific vectors_count compatibility issue
-            if "'CollectionInfo' object has no attribute 'vectors_count'" in error_msg or "vectors_count" in error_msg:
-                logger.error("Qdrant client version compatibility issue detected")
+            # Try alternative search method using scroll API as fallback
+            try:
+                logger.info("Attempting fallback search using scroll API...")
+                from qdrant_client.http import models as qdrant_models
 
-                # Since we know ingestion worked (202 chunks were saved from 21 URLs),
-                # the collection exists and has data. This is purely a client compatibility issue.
-                # For now, we'll return empty results, but the system is actually working properly.
-                search_results = []
-            else:
-                # For other errors, log and potentially raise
-                logger.warning(f"Non-compatibility Qdrant error: {error_msg}")
+                # Use scroll to get points and manually score them
+                scroll_result = qdrant_client.scroll(
+                    collection_name=COLLECTION_NAME,
+                    limit=100,  # Get more candidates for manual scoring
+                    with_vectors=True,
+                    with_payload=True
+                )
+
+                points = scroll_result[0] if scroll_result else []
+
+                if points:
+                    # Manual cosine similarity scoring
+                    import numpy as np
+                    scored_results = []
+
+                    for point in points:
+                        if point.vector:
+                            # Calculate cosine similarity
+                            similarity = np.dot(query_vector, point.vector) / (
+                                np.linalg.norm(query_vector) * np.linalg.norm(point.vector)
+                            )
+                            scored_results.append({
+                                'point': point,
+                                'score': float(similarity)
+                            })
+
+                    # Sort by score and take top_k
+                    scored_results.sort(key=lambda x: x['score'], reverse=True)
+                    top_results = scored_results[:request.top_k]
+
+                    # Convert to search result format
+                    search_results = []
+                    for item in top_results:
+                        # Create a mock search result object
+                        class SearchResult:
+                            def __init__(self, point, score):
+                                self.payload = point.payload
+                                self.score = score
+                                self.id = point.id
+
+                        search_results.append(SearchResult(item['point'], item['score']))
+
+                    logger.info(f"Fallback search successful, found {len(search_results)} results")
+                else:
+                    logger.warning("No points found in collection")
+                    search_results = []
+
+            except Exception as fallback_error:
+                logger.error(f"Fallback search also failed: {str(fallback_error)}")
                 search_results = []
 
         # Step 4: Format results
