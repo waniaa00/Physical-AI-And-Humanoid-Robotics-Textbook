@@ -7,7 +7,7 @@ import { MessageList } from './MessageList';
 import { ChatInput } from './ChatInput';
 import { useChatContext } from '../../contexts/ChatContext';
 import { useAuth } from '../../hooks/useAuth'; // T065: Use auth context
-import { getCurrentUserId, getUserHasInterests, setUserHasInterests } from '../../lib/user';
+import { getCurrentUserId, getUserHasInterests, setUserHasInterests } from '@site/src/lib/user';
 
 interface ChatWindowProps {
   isOpen: boolean;

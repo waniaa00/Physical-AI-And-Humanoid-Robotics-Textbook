@@ -4,11 +4,11 @@
  */
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { ChatContextValue, Session, ChatMessage, UIState } from '../types/chat';
-import { sendMessageWithRetry } from '../lib/apiClient';
-import { useBackendUrl } from '../lib/config';
-import { createNewSession, persistSession, loadSession, getOrCreateSessionId, generateSessionId } from '../lib/session';
-import { parseCitations } from '../lib/citations';
-import { getCurrentUserId } from '../lib/user';
+import { sendMessageWithRetry } from '@site/src/lib/apiClient';
+import { useBackendUrl } from '@site/src/lib/config';
+import { createNewSession, persistSession, loadSession, getOrCreateSessionId, generateSessionId } from '@site/src/lib/session';
+import { parseCitations } from '@site/src/lib/citations';
+import { getCurrentUserId } from '@site/src/lib/user';
 
 const ChatContext = createContext<ChatContextValue | undefined>(undefined);
 

@@ -63,3 +63,4 @@ Then visit:
 - `embed()` - Generates embeddings using Cohere
 - `create_collection()` - Creates a collection in Qdrant
 - `save_chunk_to_qdrant()` - Saves a chunk with its embedding to Qdrant
+
