@@ -1,4 +1,19 @@
 {
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -32,12 +47,6 @@
           "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "http://localhost:3001/api/:path*"
     }
   ]
 }
