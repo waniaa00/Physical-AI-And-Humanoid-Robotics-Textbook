@@ -35,7 +35,7 @@ const config: Config = {
   },
 
   customFields: {
-    backendUrl: process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000',
+    backendUrl: process.env.REACT_APP_BACKEND_URL || 'https://wnxddev-humanoid-robotics-api.hf.space',
   },
 
   presets: [
