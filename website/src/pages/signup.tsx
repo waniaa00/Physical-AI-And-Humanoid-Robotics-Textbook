@@ -20,7 +20,6 @@ export default function SignUp() {
   });
   const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isValidating, setIsValidating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -33,47 +32,38 @@ export default function SignUp() {
   const handleAccountSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsValidating(true);
 
-    // Use setTimeout to allow UI to update with loading state
-    setTimeout(() => {
-      // T031: Client-side validation
-      if (formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match!');
-        setIsValidating(false);
-        return;
-      }
+    // T031: Client-side validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match!');
+      return;
+    }
 
-      // T031: Password strength validation
-      if (formData.password.length < 8) {
-        setError('Password must be at least 8 characters long');
-        setIsValidating(false);
-        return;
-      }
+    // T031: Password strength validation
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
 
-      // T031: Email format validation (basic)
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        setError('Please enter a valid email address');
-        setIsValidating(false);
-        return;
-      }
+    // T031: Email format validation (basic)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
 
-      // T031: Password strength - check for uppercase, lowercase, number
-      const hasUppercase = /[A-Z]/.test(formData.password);
-      const hasLowercase = /[a-z]/.test(formData.password);
-      const hasNumber = /[0-9]/.test(formData.password);
+    // T031: Password strength - check for uppercase, lowercase, number
+    const hasUppercase = /[A-Z]/.test(formData.password);
+    const hasLowercase = /[a-z]/.test(formData.password);
+    const hasNumber = /[0-9]/.test(formData.password);
 
-      if (!hasUppercase || !hasLowercase || !hasNumber) {
-        setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
-        setIsValidating(false);
-        return;
-      }
+    if (!hasUppercase || !hasLowercase || !hasNumber) {
+      setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+      return;
+    }
 
-      // Move to interests step
-      setCurrentStep('interests');
-      setIsValidating(false);
-    }, 100);
+    // Move to interests step
+    setCurrentStep('interests');
   };
 
   const handleCompleteSignup = async () => {
@@ -210,8 +200,8 @@ export default function SignUp() {
                   />
                 </div>
 
-                <button type="submit" className={styles.submitButton} disabled={isValidating}>
-                  {isValidating ? 'Validating...' : 'Next: Select Interests →'}
+                <button type="submit" className={styles.submitButton}>
+                  Next: Select Interests →
                 </button>
               </form>
 
