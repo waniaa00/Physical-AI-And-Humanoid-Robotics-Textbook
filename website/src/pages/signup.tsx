@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import { InterestSelector } from '@site/src/components/Interests';
-import { setCurrentUserId, setUserHasInterests } from '@site/src/lib/user';
+import { setCurrentUserId, setUserHasInterests } from '../lib/user';
 import { useAuth } from '@site/src/hooks/useAuth';
 import styles from './auth.module.css';
 
