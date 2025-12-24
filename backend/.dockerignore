@@ -1,0 +1,62 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment files (will be set via HF Spaces secrets)
+.env
+.env.*
+!.env.example
+
+# Development files
+*.log
+*.sqlite
+*.db
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Documentation (keep README-HF.md but exclude others)
+README.md
+
+# Vercel
+.vercel/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# UV lock file (not needed in Docker)
+uv.lock
+pyproject.toml
+
+# Windows-specific
+Thumbs.db
+Desktop.ini
+
+# Data files (except necessary ones)
+data/*.db
+!data/.gitkeep
+
+# Scripts (not needed in production)
+scripts/
+migrations/
