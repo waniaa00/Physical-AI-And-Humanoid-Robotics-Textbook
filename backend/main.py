@@ -747,6 +747,89 @@ async def health_check():
     """
     return {"status": "healthy", "service": "vector-ingestion-pipeline"}
 
+@app.get("/diagnostic")
+async def diagnostic_check():
+    """
+    Diagnostic endpoint to debug RAG issues
+    Shows environment config and tests Cohere embedding generation
+    """
+    import sys
+    diagnostic_info = {
+        "environment": {},
+        "cohere_test": {},
+        "qdrant_info": {},
+        "test_search": {}
+    }
+
+    # 1. Check environment variables (masked for security)
+    diagnostic_info["environment"] = {
+        "COHERE_API_KEY": "SET" if COHERE_API_KEY else "NOT_SET",
+        "COHERE_API_KEY_PREFIX": COHERE_API_KEY[:10] + "..." if COHERE_API_KEY else "N/A",
+        "QDRANT_URL": QDRANT_URL if QDRANT_URL else "NOT_SET",
+        "COLLECTION_NAME": COLLECTION_NAME,
+        "QDRANT_API_KEY": "SET" if QDRANT_API_KEY else "NOT_SET",
+        "python_version": sys.version
+    }
+
+    # 2. Test Cohere embedding generation
+    try:
+        test_query = "test embedding generation"
+        test_embedding = embed_query(test_query)
+        diagnostic_info["cohere_test"] = {
+            "status": "SUCCESS",
+            "embedding_dimension": len(test_embedding),
+            "embedding_sample": test_embedding[:5],
+            "embedding_min": min(test_embedding),
+            "embedding_max": max(test_embedding)
+        }
+    except Exception as e:
+        diagnostic_info["cohere_test"] = {
+            "status": "FAILED",
+            "error": str(e),
+            "error_type": type(e).__name__
+        }
+
+    # 3. Check Qdrant collection info
+    try:
+        collection_info = qdrant_client.get_collection(COLLECTION_NAME)
+        diagnostic_info["qdrant_info"] = {
+            "status": "SUCCESS",
+            "collection_exists": True,
+            "points_count": collection_info.points_count,
+            "vectors_count": collection_info.vectors_count,
+            "vector_size": collection_info.config.params.vectors.size if hasattr(collection_info.config.params, 'vectors') else "unknown"
+        }
+    except Exception as e:
+        diagnostic_info["qdrant_info"] = {
+            "status": "FAILED",
+            "error": str(e),
+            "error_type": type(e).__name__
+        }
+
+    # 4. Test a simple search
+    try:
+        test_query = "inverse kinematics"
+        query_vector = embed_query(test_query)
+        search_results = qdrant_client.search(
+            collection_name=COLLECTION_NAME,
+            query_vector=query_vector,
+            limit=3
+        )
+        diagnostic_info["test_search"] = {
+            "status": "SUCCESS",
+            "query": test_query,
+            "results_count": len(search_results),
+            "top_scores": [r.score for r in search_results[:3]] if search_results else []
+        }
+    except Exception as e:
+        diagnostic_info["test_search"] = {
+            "status": "FAILED",
+            "error": str(e),
+            "error_type": type(e).__name__
+        }
+
+    return diagnostic_info
+
 # Initialize Authentication Service
 auth_service = AuthService()
 
