@@ -858,13 +858,16 @@ async def sign_up(request: SignUpRequest, req: Request, response: Response):
         result = await auth_service.sign_up(request, ip_address, user_agent)
 
         # T049: Set HttpOnly cookie with secure flags
+        # SameSite=None required for cross-domain (Vercel <-> HF Spaces)
         response.set_cookie(
             key="session_token",
             value=result.session_token,
             httponly=True,
-            secure=os.getenv("ENV", "development") == "production",  # Secure only in production
-            samesite="lax",
-            max_age=60 * 60 * 24 * 7  # 7 days in seconds
+            secure=True,  # Required for SameSite=None (both sites are HTTPS)
+            samesite="none",  # Allow cross-domain requests
+            max_age=60 * 60 * 24 * 7,  # 7 days in seconds
+            path="/",  # Available on all paths
+            domain=None  # Default to current domain
         )
 
         return result
@@ -894,12 +897,13 @@ async def sign_in(request: SignInRequest, req: Request, response: Response):
         result = await auth_service.sign_in(request, ip_address, user_agent)
 
         # T049: Set HttpOnly cookie with secure flags
+        # SameSite=None required for cross-domain (Vercel <-> HF Spaces)
         response.set_cookie(
             key="session_token",
             value=result.session_token,
             httponly=True,
-            secure=False,  # False for localhost development
-            samesite="lax",
+            secure=True,  # Required for SameSite=None (both sites are HTTPS)
+            samesite="none",  # Allow cross-domain requests
             max_age=60 * 60 * 24 * 7,  # 7 days
             path="/",  # Available on all paths
             domain=None  # Default to current domain
