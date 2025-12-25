@@ -2,15 +2,28 @@
 Retrieval tools for OpenAI Agent
 Provides book content retrieval functionality with [Source N] citation formatting
 """
-import httpx
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
-# Search API endpoint - Use environment variable or default to HF Spaces
-import os
-SEARCH_API_URL = os.getenv("SEARCH_API_URL", "https://wnxddev-humanoid-robotics-api.hf.space/search")
+# Import search dependencies
+from qdrant_client import QdrantClient
+import cohere
+
+# Initialize clients using environment variables
+COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+QDRANT_URL = os.getenv("QDRANT_URL", "https://your-cluster-url.qdrant.tech")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "humanoid-robotics-embeddings")
+
+co = cohere.Client(COHERE_API_KEY)
+qdrant_client = QdrantClient(
+    url=QDRANT_URL,
+    api_key=QDRANT_API_KEY,
+    timeout=30.0
+)
 
 
 def format_retrieval_results(search_results: List[Dict[str, Any]]) -> str:
@@ -46,6 +59,23 @@ def format_retrieval_results(search_results: List[Dict[str, Any]]) -> str:
     return "\n".join(formatted_parts)
 
 
+def embed_query(query: str) -> List[float]:
+    """
+    Generate embedding for a search query using Cohere
+    Returns 1024-dimensional vector
+    """
+    try:
+        response = co.embed(
+            texts=[query],
+            model='embed-english-v3.0',
+            input_type='search_query'
+        )
+        return response.embeddings[0]
+    except Exception as e:
+        logger.error(f"Cohere embedding error: {str(e)}")
+        raise
+
+
 def handle_retrieval_error(error: Exception) -> str:
     """
     Handle retrieval errors gracefully
@@ -63,7 +93,7 @@ async def retrieve_book_content(
     """
     Retrieve relevant book content from the vector database
 
-    This function calls the /search endpoint to find semantically similar content
+    This function performs semantic search directly using Cohere + Qdrant
     and formats results with [Source N] citation markers.
 
     Args:
@@ -84,30 +114,40 @@ async def retrieve_book_content(
         [Source 2] ...
     """
     try:
-        # Prepare request payload
-        payload = {
-            "query": query,
-            "top_k": top_k
-        }
-        if filters:
-            payload["filters"] = filters
+        # Step 1: Generate query embedding
+        logger.info(f"Retrieving content for query: {query[:50]}...")
+        query_vector = embed_query(query)
 
-        # Call search API
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(SEARCH_API_URL, json=payload)
-            response.raise_for_status()
+        # Step 2: Search Qdrant
+        search_response = qdrant_client.query_points(
+            collection_name=COLLECTION_NAME,
+            query=query_vector,
+            limit=top_k
+        )
 
-            data = response.json()
-            results = data.get('results', [])
+        # query_points returns QueryResponse with .points attribute
+        search_results = search_response.points if hasattr(search_response, 'points') else search_response
+        logger.info(f"Found {len(search_results)} results from Qdrant")
 
-            # Format results with citations
-            formatted_content = format_retrieval_results(results)
+        # Step 3: Format results for agent consumption
+        results_for_formatting = []
+        for result in search_results:
+            metadata_dict = result.payload.get('metadata', {})
+            results_for_formatting.append({
+                'text': result.payload.get('text', ''),
+                'score': result.score,
+                'metadata': {
+                    'url': metadata_dict.get('url', ''),
+                    'chunk_index': metadata_dict.get('chunk_index', 0),
+                    'source': metadata_dict.get('source', 'unknown')
+                }
+            })
 
-            logger.info(f"Retrieved {len(results)} results for query: {query[:50]}...")
-            return formatted_content
+        # Format results with citations
+        formatted_content = format_retrieval_results(results_for_formatting)
+        logger.info(f"Retrieved {len(results_for_formatting)} results for query: {query[:50]}...")
+        return formatted_content
 
-    except httpx.HTTPError as e:
-        return handle_retrieval_error(e)
     except Exception as e:
         return handle_retrieval_error(e)
 
