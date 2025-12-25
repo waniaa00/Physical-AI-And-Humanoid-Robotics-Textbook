@@ -929,8 +929,15 @@ async def sign_out(response: Response, user: UserContext = Depends(get_required_
     Invalidates current session and clears cookie.
     """
     try:
-        # Clear session cookie
-        response.delete_cookie(key="session_token")
+        # Clear session cookie - MUST match exact parameters used in set_cookie
+        # For cross-domain cookies, delete_cookie needs same samesite, secure, path, domain
+        response.delete_cookie(
+            key="session_token",
+            path="/",
+            domain=None,
+            secure=True,
+            samesite="none"
+        )
 
         logger.info(f"User signed out | user_id={user.user_id}")
 
