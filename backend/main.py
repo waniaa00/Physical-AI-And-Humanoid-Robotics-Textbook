@@ -810,16 +810,18 @@ async def diagnostic_check():
     try:
         test_query = "inverse kinematics"
         query_vector = embed_query(test_query)
-        search_results = qdrant_client.search(
+        search_results = qdrant_client.query_points(
             collection_name=COLLECTION_NAME,
-            query_vector=query_vector,
+            query=query_vector,
             limit=3
         )
+        # query_points returns QueryResponse with .points attribute
+        points = search_results.points if hasattr(search_results, 'points') else search_results
         diagnostic_info["test_search"] = {
             "status": "SUCCESS",
             "query": test_query,
-            "results_count": len(search_results),
-            "top_scores": [r.score for r in search_results[:3]] if search_results else []
+            "results_count": len(points),
+            "top_scores": [p.score for p in points[:3]] if points else []
         }
     except Exception as e:
         diagnostic_info["test_search"] = {
@@ -1122,13 +1124,15 @@ async def search(request: SearchRequest):
         # Step 3: Search Qdrant with compatibility error handling
         search_results = []
         try:
-            # Primary search attempt
-            search_results = qdrant_client.search(
+            # Primary search attempt using query_points (Qdrant Client 1.16+)
+            search_response = qdrant_client.query_points(
                 collection_name=COLLECTION_NAME,
-                query_vector=query_vector,
+                query=query_vector,
                 limit=request.top_k,
                 query_filter=qdrant_filter
             )
+            # query_points returns QueryResponse with .points attribute
+            search_results = search_response.points if hasattr(search_response, 'points') else search_response
             logger.info(f"Qdrant search successful, found {len(search_results)} results")
         except Exception as e:
             error_msg = str(e)
